@@ -127,3 +127,39 @@ EOF""",
     _helm_cmd("delete", ["delete", "--purge"], name, helm_cmd_name)
     _helm_cmd("test", ["test", "--cleanup"], name, helm_cmd_name)
     _helm_cmd("test.noclean", ["test"], name, helm_cmd_name)
+
+_HELM_TEMPLATE_CMD = """
+# find Chart.yaml in the sources
+CHARTLOC=missing
+for s in $(SRCS); do
+  if [[ $$s =~ .*Chart.yaml ]]; then
+    CHARTLOC=$$(dirname $$s)
+    break
+  fi
+done
+$(location @com_github_tmc_rules_helm//:helm) template {template_flags} $$CHARTLOC > $@
+"""
+
+def helm_template(name, srcs, values_yaml_files = [], values = None, **kwargs):
+    """Renders a helm chart (directory containing a Chart.yaml).
+
+    Args:
+        name: A unique name for this rule.
+        srcs: Source files to include as the helm chart. Typically this will just be glob(["**"]).
+        values_yaml_files: A list of additional values.yaml files to render the template with.
+        values: A map of additional values to tender the template with.
+    """
+    template_flags = []
+    for file in values_yaml_files:
+        template_flags.append("--values=$(location %s)" % file)
+    if values:
+        template_flags.append(_build_helm_set_args(values))
+
+    native.genrule(
+        name = name,
+        srcs = srcs + values_yaml_files,
+        outs = ["%s.yaml" % name],
+        tools = ["@com_github_tmc_rules_helm//:helm"],
+        cmd = _HELM_TEMPLATE_CMD.format(template_flags = " ".join(template_flags)),
+        **kwargs,
+    )

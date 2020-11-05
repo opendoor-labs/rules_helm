@@ -14,8 +14,9 @@ This allows you to describe Kubernetes applications in a deterministic manner.
 
 ### API
 
-* helm_chart - describes a helm chart.
-* helm_release - describes a helm release.
+* helm_chart - describes a Helm chart.
+* helm_template - describes a rendered Helm chart.
+* helm_release - describes a Helm release.
 
 ### Getting started
 
@@ -27,13 +28,17 @@ git_repository(
     tag = "0.4.0",
     remote = "https://github.com/tmc/rules_helm.git",
 )
+
+load("@com_github_tmc_rules_helm//:repos.bzl", "helm_repositories")
+
+helm_repositories()
 ```
 
 Then in your `BUILD` files include the `helm_chart` and/or `helm_release` rules:
 
-`charts/a-great-chart/zBUILD`:
+`charts/a-great-chart/BUILD`:
 ```python
-load("@com_github_tmc_rules_helm//:helm.bzl", "helm_chart")
+load("@com_github_tmc_rules_helm//helm:helm.bzl", "helm_chart", "helm_template")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -41,13 +46,19 @@ helm_chart(
     name = "a_great_chart",
     srcs = glob(["**"]),
 )
+
+helm_template(
+    name = "a_great_chart_template",
+    srcs = glob(["**"]),
+    values_yaml_files = ["//path/to/custom/values.yaml"],
+)
 ```
 
 Referencing the chart with helm_release:
 
 `BUILD`:
 ```python
-load("@com_github_tmc_rules_helm//:helm.bzl", "helm_release")
+load("@com_github_tmc_rules_helm//helm:helm.bzl", "helm_release")
 
 helm_release(
     name = "a_great_release",
