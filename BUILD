@@ -1,6 +1,17 @@
 sh_binary(
     name = "helm",
     srcs = ["helm.sh"],
+    data = select({
+        "@bazel_tools//src/conditions:linux_x86_64": ["@helm//:allfiles"],
+        "@bazel_tools//src/conditions:darwin": ["@helm_osx//:allfiles"],
+    }),
+    visibility = ["//visibility:public"],
+    deps = ["@bazel_tools//tools/bash/runfiles"],
+)
+
+sh_binary(
+    name = "helm_with_tiller",
+    srcs = ["helm_with_tiller.sh"],
     data = [
         "@helm_tiller//:allfiles",
     ] + select({

@@ -1,5 +1,3 @@
-load("@bazel_skylib//lib:paths.bzl", "paths")
-
 HELM_CMD_PREFIX = """
 echo "#!/usr/bin/env bash" > $@
 cat $(location @com_github_tmc_rules_helm//:runfiles_bash) >> $@
@@ -55,7 +53,7 @@ def _build_helm_set_args(values):
     return " ".join(set_args)
 
 def _helm_cmd(cmd, args, name, helm_cmd_name, values_yaml = None, values = None):
-    binary_data = ["@com_github_tmc_rules_helm//:helm"]
+    binary_data = ["@com_github_tmc_rules_helm//:helm_with_tiller"]
     if values_yaml:
         binary_data.append(values_yaml)
     if values:
