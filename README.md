@@ -23,10 +23,13 @@ This allows you to describe Kubernetes applications in a deterministic manner.
 In your Bazel `WORKSPACE` file add this repository as a dependency:
 
 ```
-git_repository(
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
     name = "com_github_tmc_rules_helm",
-    tag = "0.4.0",
-    remote = "https://github.com/tmc/rules_helm.git",
+    sha256 = "d6fca33831d05a5e797e7875043b2f1cc1d933f5e0973dafd8e40b529a21cdb0",
+    strip_prefix = "rules_helm-d7a23fccce336302405fe52eb5aab0b80a45992b",
+    urls = ["https://github.com/opendoor-labs/rules_helm/archive/d7a23fccce336302405fe52eb5aab0b80a45992b.tar.gz"],
 )
 
 load("@com_github_tmc_rules_helm//:repos.bzl", "helm_repositories")
