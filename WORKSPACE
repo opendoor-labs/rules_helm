@@ -2,7 +2,7 @@ workspace(name = "com_github_tmc_rules_helm")
 
 load(":repos.bzl", "helm_repositories")
 
-helm_repositories()
+helm_repositories(version = "2.17.0")
 
 load("//tools:buildifier.bzl", "buildifier_repositories")
 buildifier_repositories()

@@ -2,8 +2,8 @@ sh_binary(
     name = "helm",
     srcs = ["helm.sh"],
     data = select({
-        "@bazel_tools//src/conditions:linux_x86_64": ["@helm//:allfiles"],
-        "@bazel_tools//src/conditions:darwin": ["@helm_osx//:allfiles"],
+        "@bazel_tools//src/conditions:linux_x86_64": ["@helm_linux//:allfiles"],
+        "@bazel_tools//src/conditions:darwin": ["@helm_darwin//:allfiles"],
     }),
     visibility = ["//visibility:public"],
     deps = ["@bazel_tools//tools/bash/runfiles"],
@@ -15,8 +15,8 @@ sh_binary(
     data = [
         "@helm_tiller//:allfiles",
     ] + select({
-        "@bazel_tools//src/conditions:linux_x86_64": ["@helm//:allfiles"],
-        "@bazel_tools//src/conditions:darwin": ["@helm_osx//:allfiles"],
+        "@bazel_tools//src/conditions:linux_x86_64": ["@helm_linux//:allfiles"],
+        "@bazel_tools//src/conditions:darwin": ["@helm_darwin//:allfiles"],
     }),
     visibility = ["//visibility:public"],
     deps = ["@bazel_tools//tools/bash/runfiles"],

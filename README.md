@@ -31,7 +31,7 @@ git_repository(
 
 load("@com_github_tmc_rules_helm//:repos.bzl", "helm_repositories")
 
-helm_repositories()
+helm_repositories(version = "2.17.0")
 ```
 
 Then in your `BUILD` files include the `helm_chart` and/or `helm_release` rules:

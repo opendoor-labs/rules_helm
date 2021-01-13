@@ -26,9 +26,9 @@ fi
 
 platform=$(uname)
 if [ "$platform" == "Darwin" ]; then
-  BINARY=$(rlocation helm_osx/darwin-amd64/helm)
+  BINARY=$(rlocation helm_darwin/darwin-amd64/helm)
 elif [ "$platform" == "Linux" ]; then
-  BINARY=$(rlocation helm/linux-amd64/helm)
+  BINARY=$(rlocation helm_linux/linux-amd64/helm)
 else
   echo "Helm does not have a binary for $platform"
   exit 1
