@@ -30,7 +30,7 @@ def helm_repositories(version = "2.17.0"):
 
     if "helm_linux" not in native.existing_rules():
         http_archive(
-            name = "helm",
+            name = "helm_linux",
             sha256 = _VERSION_SHAS[version]["linux"],
             urls = ["https://storage.googleapis.com/kubernetes-helm/helm-v{}-linux-amd64.tar.gz".format(version)],
             build_file = "@com_github_tmc_rules_helm//:helm.BUILD",
